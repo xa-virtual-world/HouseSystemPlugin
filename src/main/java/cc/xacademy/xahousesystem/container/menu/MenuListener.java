@@ -33,10 +33,8 @@ public class MenuListener implements Listener {
     
     @EventHandler
     public void onSlotClick(InventoryClickEvent event) {
-        if (this.invs.containsKey(event.getInventory())) {
-            if (event.getClickedInventory() == event.getInventory()) {
-                event.setCancelled(true);
-            }
+        if (this.invs.containsKey(event.getClickedInventory())) {
+            event.setCancelled(true);
         }
     }
 }

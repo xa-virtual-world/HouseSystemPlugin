@@ -1,9 +1,11 @@
 package cc.xacademy.xahousesystem.util;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -77,6 +79,16 @@ public class TagUtil {
         editMeta(stack, meta -> {
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        });
+    }
+    
+    // for menu purposes
+    public static void addClickObtainTooltip(ItemStack stack) {
+        editMeta(stack, meta -> {
+            List<String> lore = meta.getLore();
+            
+            lore.add("");
+            lore.add(ChatColor.DARK_GRAY + (ChatColor.ITALIC + "CLICK TO OBTAIN"));
         });
     }
 }
