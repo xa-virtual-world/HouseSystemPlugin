@@ -1,0 +1,5 @@
+main: cc.xacademy.xahousesystem.HouseSystem
+name: XA House System
+version: 0.1.0
+api-version: 1.16
+commands:
