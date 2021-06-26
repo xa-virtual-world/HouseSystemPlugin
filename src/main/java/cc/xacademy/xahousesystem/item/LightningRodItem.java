@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.FluidCollisionMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.RayTraceResult;
 
 import cc.xacademy.xahousesystem.util.TagUtil;
 
@@ -39,12 +43,26 @@ public class LightningRodItem extends SpecialItem {
     }
     
     @Override
-    public void onLeftClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
-        player.sendMessage("A");
+    public void onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
+        player.getWorld().strikeLightning(block.getLocation().add(face.getDirection()));
     }
     
     @Override
-    public void onLeftClickAir(ItemStack stack, Player player) {
-        player.sendMessage("B");
+    public void onRightClickLiving(ItemStack stack, Player player, LivingEntity living) {
+        living.getWorld().strikeLightning(living.getLocation());
+    }
+    
+    @Override
+    public void onRightClickAir(ItemStack stack, Player player) {
+        RayTraceResult result = player.getWorld().rayTrace(
+                player.getEyeLocation(),
+                player.getEyeLocation().getDirection(),
+                128, FluidCollisionMode.NEVER,
+                true, 0, e -> e != player);
+        
+        if (result != null) {
+            Location loc = result.getHitPosition().toLocation(player.getWorld());
+            player.getWorld().strikeLightning(loc);
+        }
     }
 }
