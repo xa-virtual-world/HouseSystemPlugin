@@ -11,25 +11,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class InvMask {
     
-    private final ItemStack[] stacks;
+    private final boolean[] mask;
     
-    public void apply(Inventory inv) {
-        for (int i = 0; i < Math.min(this.stacks.length, inv.getSize()); i++) {
-            if (this.stacks[i] != null) {
-                inv.setItem(i, new ItemStack(this.stacks[i]));
+    public void apply(Inventory inv, ItemStack stack) {
+        for (int i = 0; i < Math.min(this.mask.length, inv.getSize()); i++) {
+            if (this.mask[i]) {
+                inv.setItem(i, new ItemStack(stack));
             }
         }
     }
     
-    public static Builder builder(int row) {
+    public static Builder builder() {
         return new Builder();
     }
 
-    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder {
         
         private List<String> patterns;
-        private ItemStack content;
         
         public Builder pattern(String data) {
             if (data.length() != 9) {
@@ -45,32 +43,26 @@ public class InvMask {
             return this;
         }
         
-        public Builder content(ItemStack stack) {
-            this.content = stack;
-            
-            return this;
-        }
-        
         public InvMask build() {
             
-            ItemStack[] stacks = new ItemStack[this.patterns.size() * 9];
+            boolean[] mask = new boolean[this.patterns.size() * 9];
             
             for (int i = 0; i < this.patterns.size(); i++) {
                 String line = this.patterns.get(i);
                 
                 for (int j = 0; j < 9; j++) {
                     char state = line.charAt(j);
-                    if (state != '0' && state != 1) {
+                    if (state != '0' && state != '1') {
                         throw new IllegalArgumentException("Pattern content must be '0' or '1'!");
                     }
                     
-                    stacks[i * 9 + j] = state == 1 ? this.content : null;
+                    mask[i * 9 + j] = state == '1';
                 }
             }
             
-            InvMask mask = new InvMask(stacks);
+            InvMask out = new InvMask(mask);
             
-            return mask;
+            return out;
         }
     }
 }
