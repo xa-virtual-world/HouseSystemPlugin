@@ -26,6 +26,7 @@ public class HousePlugin extends JavaPlugin {
         // config file
         FileConfiguration config = this.getConfig();
         config.options().copyDefaults(true);
+        config.addDefault("terraSmasherMaxSize", 2);
         this.saveConfig();
         
         // registries

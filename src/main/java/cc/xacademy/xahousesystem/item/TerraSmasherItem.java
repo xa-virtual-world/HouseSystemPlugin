@@ -5,17 +5,21 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
 
+import cc.xacademy.xahousesystem.HousePlugin;
 import cc.xacademy.xahousesystem.util.TagUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -62,6 +66,12 @@ public class TerraSmasherItem extends SpecialItem {
     @Override
     public void onLeftClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
         int size = TagUtil.readEntry(stack, "DigSize", PersistentDataType.INTEGER);
+        PluginManager pluginManager = HousePlugin.get().getServer().getPluginManager();
+        
+        // test main block
+        BlockBreakEvent centerEvent = new BlockBreakEvent(block, player);
+        pluginManager.callEvent(centerEvent);
+        if (centerEvent.isCancelled() || block.getType().getHardness() < 0) return;
         
         for (int i = -size; i <= size; i++) {
             for (int j = -size; j <= size; j++) {
@@ -89,7 +99,19 @@ public class TerraSmasherItem extends SpecialItem {
                 }
                 
                 Location loc = block.getLocation().add(new Vector(x, y, z));
-                loc.getBlock().breakNaturally(stack);
+                Block target = loc.getBlock();
+                
+                BlockBreakEvent event = new BlockBreakEvent(target, player);
+                pluginManager.callEvent(event);
+                if (!event.isCancelled()) {
+                    if (player.getGameMode() == GameMode.CREATIVE) {
+                        target.setType(Material.AIR);
+                    } else {
+                        if (target.getType().getHardness() >= 0) {
+                            target.breakNaturally(stack);
+                        }
+                    }
+                }
             }
         }
     }
@@ -106,6 +128,7 @@ public class TerraSmasherItem extends SpecialItem {
     
     private void cycle(ItemStack stack, Player player) {
         AtomicInteger size = new AtomicInteger(0);
+        int maxSize = HousePlugin.get().getConfig().getInt("terraSmasherMaxSize", 2);
         
         TagUtil.editTag(stack, tag -> {
             size.set(tag.get(TagUtil.namespace("DigSize"), PersistentDataType.INTEGER));
@@ -114,12 +137,12 @@ public class TerraSmasherItem extends SpecialItem {
                 size.set(size.get() - 1);
                 
                 if (size.get() < 0) {
-                    size.set(4);
+                    size.set(maxSize);
                 }
             } else {
                 size.set(size.get() + 1);
                 
-                if (size.get() > 4) {
+                if (size.get() > maxSize) {
                     size.set(0);
                 }
             }
