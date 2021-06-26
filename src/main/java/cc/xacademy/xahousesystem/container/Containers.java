@@ -3,9 +3,6 @@ package cc.xacademy.xahousesystem.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import cc.xacademy.xahousesystem.HousePlugin;
 import cc.xacademy.xahousesystem.container.builder.Presets;
 import cc.xacademy.xahousesystem.container.menu.Menu;

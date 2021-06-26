@@ -1,5 +1,6 @@
 package cc.xacademy.xahousesystem.container.builder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.inventory.Inventory;
@@ -29,12 +30,16 @@ public class InvMask {
         
         private List<String> patterns;
         
+        private Builder() {
+            this.patterns = new ArrayList<>();
+        }
+        
         public Builder pattern(String data) {
             if (data.length() != 9) {
                 throw new IllegalArgumentException("Pattern length must be 9!");
             }
             
-            if (data.length() >= 6) {
+            if (patterns.size() >= 6) {
                 throw new IllegalStateException("Too many pattern rows!");
             }
             
