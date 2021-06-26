@@ -9,7 +9,11 @@ import org.bukkit.inventory.ItemStack;
 
 import cc.xacademy.xahousesystem.util.TagUtil;
 
-public class LightningRod extends SpecialItem {
+public class LightningRodItem extends SpecialItem {
+
+    public LightningRodItem(String registryName) {
+        super(registryName);
+    }
 
     @Override
     public ItemStack createDefaultStack() {
@@ -23,9 +27,7 @@ public class LightningRod extends SpecialItem {
             lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "- Derek Nee, 2021"));
         });
         
-        TagUtil.editTag(stack, tag -> {
-            TagUtil.makeUnique(tag);
-        });
+        TagUtil.setupSpecialItem(stack, "lightning_rod");
         
         return stack;
     }

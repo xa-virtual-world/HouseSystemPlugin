@@ -48,9 +48,24 @@ public class TagUtil {
         String itemName = tag.get(namespace("SpecialItem"), PersistentDataType.STRING);
         if (itemName == null) return Optional.empty();
         
+        return getSpecialFromName(itemName);
+    }
+    
+    public static Optional<SpecialItem> getSpecialFromName(String itemName) {
         SpecialItem item = HousePlugin.get().getRegistries()
                 .lazyGetRegistry(SpecialItem.class).get(itemName);
         
         return Optional.ofNullable(item);
+    }
+
+    public static void addSpecialItemName(PersistentDataContainer tag, String name) {
+        tag.set(namespace("SpecialItem"), PersistentDataType.STRING, name);
+    }
+    
+    public static void setupSpecialItem(ItemStack stack, String name) {
+        editTag(stack, tag -> {
+            TagUtil.makeUnique(tag);
+            TagUtil.addSpecialItemName(tag, "lightning_rod");
+        });
     }
 }

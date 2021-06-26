@@ -14,6 +14,10 @@ import cc.xacademy.xahousesystem.registry.IRegistryEntry;
  */
 public abstract class SpecialItem extends IRegistryEntry<SpecialItem> {
 
+    public SpecialItem(String registryName) {
+        super(registryName);
+    }
+    
     public void onLeftClickAir(ItemStack stack, Player player) {}
     public void onRightClickAir(ItemStack stack, Player player) {}
     

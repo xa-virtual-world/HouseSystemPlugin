@@ -3,6 +3,7 @@ package cc.xacademy.xahousesystem;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import cc.xacademy.xahousesystem.command.GiveSpecialItemCommand;
 import cc.xacademy.xahousesystem.item.Items;
 import cc.xacademy.xahousesystem.listener.PlayerInteractionHandler;
 import cc.xacademy.xahousesystem.registry.RegistryHandler;
@@ -18,14 +19,20 @@ public class HousePlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
         
+        // config file
         FileConfiguration config = this.getConfig();
         config.options().copyDefaults(true);
         this.saveConfig();
         
+        // registries
         this.registries = new RegistryHandler();
         Items.register(this.registries);
         
+        // listeners
         this.getServer().getPluginManager().registerEvents(new PlayerInteractionHandler(), this);
+        
+        // commands
+        this.getCommand("givespecialitem").setExecutor(new GiveSpecialItemCommand());
     }
     
     @Override

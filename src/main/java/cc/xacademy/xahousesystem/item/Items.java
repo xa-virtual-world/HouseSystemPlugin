@@ -8,6 +8,6 @@ public class Items {
     public static void register(RegistryHandler handler) {
         RegistryType<SpecialItem> registry = handler.lazyGetRegistry(SpecialItem.class);
         
-        registry.register(new LightningRod());
+        registry.register(new LightningRodItem("lightning_rod"));
     }
 }

@@ -3,3 +3,7 @@ name: XA House System
 version: 0.1.0
 api-version: 1.16
 commands:
+  givespecialitem:
+    description: Gives you a special item from XA House System
+    usage: /givespecialitem <item_name>
+    permission: xahousesystem.staff

@@ -1,9 +1,11 @@
 package cc.xacademy.xahousesystem.registry;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@AllArgsConstructor
 public abstract class IRegistryEntry<T extends IRegistryEntry<T>> {
 
-    private String registryName;
+    @Getter @Setter private String registryName;
 }
