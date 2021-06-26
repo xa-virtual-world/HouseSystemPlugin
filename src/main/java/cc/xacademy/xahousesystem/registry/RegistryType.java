@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class RegistryType<T extends IRegistryEntry<T>> {
 
-    private Map<String, T> entries;
+    private final Map<String, T> entries;
     
     public RegistryType() {
         this.entries = new HashMap<>();
