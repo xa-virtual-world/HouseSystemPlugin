@@ -98,7 +98,9 @@ public class TerraSmasherItem extends SpecialItem {
                     break;
                 }
                 
-                Location loc = block.getLocation().add(new Vector(x, y, z));
+                // Block#getLocation seems to clone already...
+                // But the javadoc didn't mention anything so just in case
+                Location loc = block.getLocation().clone().add(new Vector(x, y, z));
                 Block target = loc.getBlock();
                 
                 BlockBreakEvent event = new BlockBreakEvent(target, player);
