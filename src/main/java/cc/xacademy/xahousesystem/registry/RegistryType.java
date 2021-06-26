@@ -1,8 +1,11 @@
 package cc.xacademy.xahousesystem.registry;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import cc.xacademy.xahousesystem.item.SpecialItem;
 
 public class RegistryType<T extends IRegistryEntry<T>> {
 
@@ -22,5 +25,9 @@ public class RegistryType<T extends IRegistryEntry<T>> {
     
     public Set<String> getKeys() {
         return this.entries.keySet();
+    }
+
+    public Collection<T> getValues() {
+        return this.entries.values();
     }
 }

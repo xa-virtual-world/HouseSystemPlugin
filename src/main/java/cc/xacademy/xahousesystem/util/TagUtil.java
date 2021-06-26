@@ -88,7 +88,9 @@ public class TagUtil {
             List<String> lore = meta.getLore();
             
             lore.add("");
-            lore.add(ChatColor.DARK_GRAY + (ChatColor.ITALIC + "CLICK TO OBTAIN"));
+            lore.add(ChatColor.GREEN + "CLICK TO OBTAIN");
+            
+            meta.setLore(lore);
         });
     }
 }

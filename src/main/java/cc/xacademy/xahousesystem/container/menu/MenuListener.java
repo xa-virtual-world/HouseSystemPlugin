@@ -3,6 +3,8 @@ package cc.xacademy.xahousesystem.container.menu;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -35,6 +37,16 @@ public class MenuListener implements Listener {
     public void onSlotClick(InventoryClickEvent event) {
         if (this.invs.containsKey(event.getInventory())) {
             event.setCancelled(true);
+            
+            Menu menu = this.invs.get(event.getClickedInventory());
+            if (menu != null) {
+                int slot = event.getSlot();
+                HumanEntity clicker = event.getWhoClicked();
+                
+                if (clicker instanceof Player) {
+                    menu.onSlotClick((Player) clicker, slot);
+                }
+            }
         }
     }
 }
