@@ -3,6 +3,7 @@ package cc.xacademy.xahousesystem;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import cc.xacademy.xahousesystem.command.CommandCompleter;
 import cc.xacademy.xahousesystem.command.GiveSpecialItemCommand;
 import cc.xacademy.xahousesystem.item.Items;
 import cc.xacademy.xahousesystem.listener.PlayerInteractionHandler;
@@ -33,6 +34,7 @@ public class HousePlugin extends JavaPlugin {
         
         // commands
         this.getCommand("givespecialitem").setExecutor(new GiveSpecialItemCommand());
+        this.getCommand("givespecialitem").setTabCompleter(new CommandCompleter());
     }
     
     @Override

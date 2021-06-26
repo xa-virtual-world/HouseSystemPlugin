@@ -45,6 +45,8 @@ public class TagUtil {
     }
     
     public static Optional<SpecialItem> getSpecialFromStack(ItemStack stack) {
+        if (stack == null) return Optional.empty();
+        
         PersistentDataContainer tag = stack.getItemMeta().getPersistentDataContainer();
         
         String itemName = tag.get(namespace("SpecialItem"), PersistentDataType.STRING);
