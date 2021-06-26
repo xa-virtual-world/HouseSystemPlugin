@@ -9,5 +9,6 @@ public class Items {
         RegistryType<SpecialItem> registry = handler.lazyGetRegistry(SpecialItem.class);
         
         registry.register(new LightningRodItem("lightning_rod"));
+        registry.register(new TerraSmasherItem("terra_smasher"));
     }
 }

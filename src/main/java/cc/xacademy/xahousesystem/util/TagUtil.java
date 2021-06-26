@@ -47,7 +47,7 @@ public class TagUtil {
     }
     
     public static Optional<SpecialItem> getSpecialFromStack(ItemStack stack) {
-        if (stack == null) return Optional.empty();
+        if (stack == null || !stack.hasItemMeta()) return Optional.empty();
         
         PersistentDataContainer tag = stack.getItemMeta().getPersistentDataContainer();
         
@@ -71,7 +71,7 @@ public class TagUtil {
     public static void setupSpecialItem(ItemStack stack, String name) {
         editTag(stack, tag -> {
             TagUtil.makeUnique(tag);
-            TagUtil.addSpecialItemName(tag, "lightning_rod");
+            TagUtil.addSpecialItemName(tag, name);
         });
     }
     
@@ -92,5 +92,12 @@ public class TagUtil {
             
             meta.setLore(lore);
         });
+    }
+    
+    // only use for single read to minimize overhead
+    public static <T, Z> Z readEntry(ItemStack stack, String key, PersistentDataType<T, Z> type) {
+        PersistentDataContainer tag = stack.getItemMeta().getPersistentDataContainer();
+        
+        return tag.get(namespace(key), type);
     }
 }

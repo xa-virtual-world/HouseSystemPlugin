@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +15,7 @@ import cc.xacademy.xahousesystem.util.TagUtil;
 
 public class PlayerInteractionHandler implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onRightClickBlock(PlayerInteractEvent event) {
         if (!event.hasItem()) return;
         
@@ -41,7 +42,7 @@ public class PlayerInteractionHandler implements Listener {
         });
     }
     
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onRightClickEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         ItemStack stack = player.getInventory().getItem(event.getHand());

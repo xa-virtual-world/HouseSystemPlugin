@@ -1,4 +1,4 @@
-package cc.xacademy.xahousesystem.container.menu;
+package cc.xacademy.xahousesystem.listener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
+
+import cc.xacademy.xahousesystem.container.menu.Menu;
 
 /**
  * All menus must be recorded here.
