@@ -1,0 +1,23 @@
+cc/xacademy/xahousesystem/registry/IRegistryEntry.java
+ cc.xacademy.xahousesystem.registry.IRegistryEntry
+cc/xacademy/xahousesystem/HousePlugin.java
+ cc.xacademy.xahousesystem.HousePlugin
+cc/xacademy/xahousesystem/util/PlayerUtil.java
+ cc.xacademy.xahousesystem.util.PlayerUtil
+cc/xacademy/xahousesystem/item/SpecialItem.java
+ cc.xacademy.xahousesystem.item.SpecialItem
+cc/xacademy/xahousesystem/registry/RegistryHandler.java
+ cc.xacademy.xahousesystem.registry.RegistryHandler
+cc/xacademy/xahousesystem/registry/RegistryType.java
+ cc.xacademy.xahousesystem.registry.RegistryType
+cc/xacademy/xahousesystem/item/Items.java
+ cc.xacademy.xahousesystem.item.Items
+cc/xacademy/xahousesystem/util/TagUtil.java
+ cc.xacademy.xahousesystem.util.TagUtil
+cc/xacademy/xahousesystem/listener/PlayerInteractionHandler.java
+ cc.xacademy.xahousesystem.listener.PlayerInteractionHandler
+ cc.xacademy.xahousesystem.listener.PlayerInteractionHandler$1
+cc/xacademy/xahousesystem/command/GiveSpecialItemCommand.java
+ cc.xacademy.xahousesystem.command.GiveSpecialItemCommand
+cc/xacademy/xahousesystem/item/LightningRodItem.java
+ cc.xacademy.xahousesystem.item.LightningRodItem

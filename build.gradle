@@ -26,3 +26,9 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
+
+processResources {
+    from("$rootDir") {
+        include 'plugin.yml'
+    }
+}

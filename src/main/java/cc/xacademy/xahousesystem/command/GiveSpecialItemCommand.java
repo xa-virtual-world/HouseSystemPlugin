@@ -24,7 +24,7 @@ public class GiveSpecialItemCommand implements CommandExecutor {
             
             container.ifPresent(item -> PlayerUtil.addToInventory(player, item.createDefaultStack()));
             
-            return container.isEmpty();
+            return container.isPresent();
         }
         
         return true;
