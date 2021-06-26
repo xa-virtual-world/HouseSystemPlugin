@@ -1,10 +1,13 @@
 package cc.xacademy.xahousesystem.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import cc.xacademy.xahousesystem.util.TagUtil;
-import net.md_5.bungee.api.ChatColor;
 
 public class LightningRod extends SpecialItem {
 
@@ -14,6 +17,10 @@ public class LightningRod extends SpecialItem {
         
         TagUtil.editMeta(stack, meta -> {
             meta.setDisplayName(ChatColor.GOLD + "Lightning Rod");
+            
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.DARK_GRAY + "谁在用闪电劈我？");
+            lore.add(ChatColor.GRAY + (ChatColor.ITALIC + "- Derek Nee, 2021"));
         });
         
         TagUtil.editTag(stack, tag -> {
