@@ -33,6 +33,8 @@ public class SpellBlinkItem extends SpecialItem {
             lore.add("");
             lore.add(ChatColor.DARK_GRAY + 
                     (ChatColor.ITALIC + "From XA Chengdu to XA Shanghai instantly!"));
+            lore.add("");
+            lore.add(ChatColor.DARK_GRAY + "[RIGHT CLICK] to teleport to cursor");
             
             meta.setLore(lore);            
         });

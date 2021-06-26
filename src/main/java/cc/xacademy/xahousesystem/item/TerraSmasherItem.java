@@ -47,8 +47,8 @@ public class TerraSmasherItem extends SpecialItem {
             lore.add("");
             lore.add(ChatColor.GRAY + "Efficiency III");
             lore.add("");
-            lore.add(ChatColor.DARK_GRAY + "RIGHT CLICK to cycle dig size");
-            lore.add(ChatColor.DARK_GRAY + "SHIFT + RIGHT CLICK to cycle back");
+            lore.add(ChatColor.DARK_GRAY + "[RIGHT CLICK] to cycle dig size");
+            lore.add(ChatColor.DARK_GRAY + "]SHIFT + RIGHT CLICK] to cycle back");
             
             meta.setLore(lore);
             
