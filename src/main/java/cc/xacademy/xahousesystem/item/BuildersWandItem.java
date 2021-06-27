@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
-import cc.xacademy.xahousesystem.HousePlugin;
 import cc.xacademy.xahousesystem.util.TagUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -26,7 +25,6 @@ public class BuildersWandItem extends SpecialItem {
     @Override
     public ItemStack createDefaultStack() {
         ItemStack stack = new ItemStack(Material.STICK);
-        int size = HousePlugin.get().getConfig().getInt("buildersWandSize", 128);
         
         TagUtil.editTag(stack, tag -> {
             // 0: horizontal; 1: vertical
@@ -73,15 +71,14 @@ public class BuildersWandItem extends SpecialItem {
     
     private void cycle(ItemStack stack, Player player) {
         AtomicInteger mode = new AtomicInteger(0);
-        String modeStr = mode.get() == 1 ? "Horizontal" : "Vertical";
         
         TagUtil.editTag(stack, tag -> {
-            mode.set(tag.get(TagUtil.namespace("Mode"), PersistentDataType.INTEGER));
-           
-            mode.set(mode.get() ^ 1);
-            
+            mode.set(tag.get(TagUtil.namespace("Mode"), PersistentDataType.INTEGER) ^ 1);
+                                   
             tag.set(TagUtil.namespace("Mode"), PersistentDataType.INTEGER, mode.get());
         });
+        
+        String modeStr = mode.get() == 1 ? "Horizontal" : "Vertical";
         
         TagUtil.editMeta(stack, meta -> {
             List<String> lore = meta.getLore();

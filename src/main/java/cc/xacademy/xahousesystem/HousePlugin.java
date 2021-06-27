@@ -27,7 +27,7 @@ public class HousePlugin extends JavaPlugin {
         FileConfiguration config = this.getConfig();
         config.options().copyDefaults(true);
         config.addDefault("terraSmasherMaxSize", 2);
-        config.addDefault("buildersWandSize", 128);
+        config.addDefault("buildersWandRadius", 32);
         this.saveConfig();
         
         // registries
