@@ -26,13 +26,21 @@ public class PlayerInteractionHandler implements Listener {
                 item.onLeftClickAir(stack, player);
                 break;
             case LEFT_CLICK_BLOCK:
-                item.onLeftClickBlock(stack, player, event.getClickedBlock(), event.getBlockFace());
+                event.setCancelled(
+                        item.onLeftClickBlock(
+                                stack, player, event.getClickedBlock(), event.getBlockFace()
+                                )
+                        );
                 break;
             case RIGHT_CLICK_AIR:
                 item.onRightClickAir(stack, player);
                 break;
             case RIGHT_CLICK_BLOCK:
-                item.onRightClickBlock(stack, player, event.getClickedBlock(), event.getBlockFace());
+                event.setCancelled(
+                        item.onRightClickBlock(
+                                stack, player, event.getClickedBlock(), event.getBlockFace()
+                                )
+                        );
                 break;
             default:
                 break;
@@ -49,7 +57,7 @@ public class PlayerInteractionHandler implements Listener {
         if (stack == null || !(entity instanceof LivingEntity)) return;
         
         TagUtil.getSpecialFromStack(stack).ifPresent(item -> {
-            item.onRightClickLiving(stack, player, (LivingEntity) entity);
+            event.setCancelled(item.onRightClickLiving(stack, player, (LivingEntity) entity));
         });
     }
 }

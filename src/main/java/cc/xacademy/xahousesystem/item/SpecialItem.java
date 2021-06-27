@@ -21,10 +21,18 @@ public abstract class SpecialItem extends IRegistryEntry<SpecialItem> {
     public void onLeftClickAir(ItemStack stack, Player player) {}
     public void onRightClickAir(ItemStack stack, Player player) {}
     
-    public void onLeftClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {}
-    public void onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {}
+    // returns whether to cancel the default event
+    public boolean onLeftClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
+        return false;
+    }
     
-    public void onRightClickLiving(ItemStack stack, Player player, LivingEntity living) {}
+    public boolean onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
+        return false;
+    }
+    
+    public boolean onRightClickLiving(ItemStack stack, Player player, LivingEntity living) {
+        return false;
+    }
     
     public abstract ItemStack createDefaultStack();
 }

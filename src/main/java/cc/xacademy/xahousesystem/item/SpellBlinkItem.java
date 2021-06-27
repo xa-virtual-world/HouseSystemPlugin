@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -46,8 +47,10 @@ public class SpellBlinkItem extends SpecialItem {
     }
 
     @Override
-    public void onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {        
+    public boolean onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {        
         this.lookAt(stack, player, block, face);
+        
+        return false;
     }
     
     @Override
@@ -73,6 +76,16 @@ public class SpellBlinkItem extends SpecialItem {
         to.setYaw(player.getLocation().getYaw());
         to.setPitch(player.getLocation().getPitch());
         
+        player.getWorld().spawnParticle(
+                Particle.PORTAL,
+                player.getLocation().clone().add(0, 1, 0),
+                20, 0.5, 1, 0.5);
+        
         player.teleport(to);
+        
+        player.getWorld().spawnParticle(
+                Particle.PORTAL,
+                player.getLocation().clone().add(0, 1, 0),
+                20, 0.5, 1, 0.5);
     }
 }

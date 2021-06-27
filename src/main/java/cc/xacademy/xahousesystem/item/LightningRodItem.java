@@ -43,13 +43,17 @@ public class LightningRodItem extends SpecialItem {
     }
     
     @Override
-    public void onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
+    public boolean onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
         player.getWorld().strikeLightning(block.getLocation().add(face.getDirection()));
+        
+        return false;
     }
     
     @Override
-    public void onRightClickLiving(ItemStack stack, Player player, LivingEntity living) {
+    public boolean onRightClickLiving(ItemStack stack, Player player, LivingEntity living) {
         living.getWorld().strikeLightning(living.getLocation());
+        
+        return true;
     }
     
     @Override

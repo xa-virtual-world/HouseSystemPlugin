@@ -48,7 +48,7 @@ public class TerraSmasherItem extends SpecialItem {
             lore.add(ChatColor.GRAY + "Efficiency III");
             lore.add("");
             lore.add(ChatColor.DARK_GRAY + "[RIGHT CLICK] to cycle dig size");
-            lore.add(ChatColor.DARK_GRAY + "]SHIFT + RIGHT CLICK] to cycle back");
+            lore.add(ChatColor.DARK_GRAY + "[SHIFT + RIGHT CLICK] to cycle back");
             
             meta.setLore(lore);
             
@@ -64,14 +64,14 @@ public class TerraSmasherItem extends SpecialItem {
     }
     
     @Override
-    public void onLeftClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
+    public boolean onLeftClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
         int size = TagUtil.readEntry(stack, "DigSize", PersistentDataType.INTEGER);
         PluginManager pluginManager = HousePlugin.get().getServer().getPluginManager();
         
         // test main block
         BlockBreakEvent centerEvent = new BlockBreakEvent(block, player);
         pluginManager.callEvent(centerEvent);
-        if (centerEvent.isCancelled() || block.getType().getHardness() < 0) return;
+        if (centerEvent.isCancelled() || block.getType().getHardness() < 0) return false;
         
         for (int i = -size; i <= size; i++) {
             for (int j = -size; j <= size; j++) {
@@ -116,6 +116,8 @@ public class TerraSmasherItem extends SpecialItem {
                 }
             }
         }
+        
+        return true;
     }
     
     @Override
@@ -124,8 +126,10 @@ public class TerraSmasherItem extends SpecialItem {
     }
     
     @Override
-    public void onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
+    public boolean onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
         this.cycle(stack, player);
+        
+        return false;
     }
     
     private void cycle(ItemStack stack, Player player) {
