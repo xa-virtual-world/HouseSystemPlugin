@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import cc.xacademy.xahousesystem.item.SpecialItem;
-
 public class RegistryType<T extends IRegistryEntry<T>> {
 
     private final Map<String, T> entries;
