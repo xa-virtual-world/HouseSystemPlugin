@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
@@ -27,6 +26,7 @@ public class RailgunItem extends SpecialItem {
     
     private static final int SHEAR_DURABILITY = 238;
     private static final int MAX_CHARGE = 200;
+    private static final int CHARGE_BAR_LENGTH = 50;
 
     public RailgunItem(String registryName) {
         super(registryName);
@@ -41,10 +41,10 @@ public class RailgunItem extends SpecialItem {
         });
         
         TagUtil.editMeta(stack, meta -> {
-            meta.setDisplayName(ChatColor.RED + "Railgun");
+            meta.setDisplayName(ChatColor.GOLD + "Railgun");
             
             List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.AQUA + String.format("Charge: %d/%d Xoules", 0, MAX_CHARGE));
+            lore.add(ChatColor.AQUA + "Charge: " + formatChargeTooltip(0));
             lore.add(ChatColor.GRAY + "Fires a super-charged bolt");
             lore.add("");
             lore.add(
@@ -108,16 +108,22 @@ public class RailgunItem extends SpecialItem {
         AtomicInteger charge = new AtomicInteger(0);
         
         TagUtil.editTag(stack, tag -> {
+            String screenMsg;
+            
             charge.set(tag.get(TagUtil.namespace("Charge"), PersistentDataType.INTEGER));
             
-            if (charge.get() >= MAX_CHARGE) {
-                player.spigot().sendMessage(
-                        ChatMessageType.ACTION_BAR,
-                        new TextComponent(ChatColor.AQUA + "Fully charged!")
-                        );
-            } else {
+            if (charge.get() < MAX_CHARGE) {
                 charge.set(charge.get() + 1);
+                screenMsg = formatChargeTooltip(charge.get());
+            } else {
+                screenMsg = ChatColor.GREEN + (ChatColor.BOLD + "Full");
             }
+            
+            player.spigot().sendMessage(
+                    ChatMessageType.ACTION_BAR,
+                    new TextComponent(
+                            ChatColor.AQUA + "Charge: " + screenMsg)
+                    );
             
             tag.set(
                     TagUtil.namespace("Charge"),
@@ -128,7 +134,7 @@ public class RailgunItem extends SpecialItem {
         
         TagUtil.editMeta(stack, meta -> {
             List<String> lore = meta.getLore();
-            lore.set(0, ChatColor.AQUA + String.format("Charge: %d/%d Xoules", 0, MAX_CHARGE));
+            lore.set(0, ChatColor.AQUA + "Charge: " + formatChargeTooltip(charge.get()));
             meta.setLore(lore);
         });
     }
@@ -140,8 +146,18 @@ public class RailgunItem extends SpecialItem {
         
         TagUtil.editMeta(stack, meta -> {
             List<String> lore = meta.getLore();
-            lore.set(0, ChatColor.AQUA + "Charge: " + 0 + " Xoules");
+            lore.set(0, ChatColor.AQUA + "Charge: " + formatChargeTooltip(0));
             meta.setLore(lore);
         });
+    }
+    
+    private static String formatChargeTooltip(int charge) {
+        int lit = TagUtil.approxDurability(charge, MAX_CHARGE, CHARGE_BAR_LENGTH);
+        int remain = CHARGE_BAR_LENGTH - lit;
+        
+        String first = new String(new char[lit]).replace("\0", "|");
+        String second = new String(new char[remain]).replace("\0", "|");
+        
+        return ChatColor.BOLD + (ChatColor.GREEN + first + ChatColor.DARK_RED + second);
     }
 }

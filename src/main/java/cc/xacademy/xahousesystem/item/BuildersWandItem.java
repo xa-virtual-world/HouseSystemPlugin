@@ -44,7 +44,7 @@ public class BuildersWandItem extends SpecialItem {
         });
         
         TagUtil.editMeta(stack, meta -> {
-            meta.setDisplayName(ChatColor.GOLD + "Builder's Wand");
+            meta.setDisplayName(ChatColor.RED + "Builder's Wand");
             
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.AQUA + "Mode: " + ChatColor.BOLD + "Horizontal");
