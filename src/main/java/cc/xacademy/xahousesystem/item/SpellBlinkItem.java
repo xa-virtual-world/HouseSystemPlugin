@@ -68,7 +68,7 @@ public class SpellBlinkItem extends SpecialItem {
     private void lookAt(ItemStack stack, Player player, Block block, BlockFace face) {
         Location to = block.getLocation().clone().add(face.getDirection());
         
-        if (to.clone().add(0, 1, 0).getBlock().getType() != Material.AIR) {
+        if (!to.clone().add(0, 1, 0).getBlock().getType().isAir()) {
             to.add(0, -1, 0);
         }
         

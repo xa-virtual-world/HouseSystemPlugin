@@ -2,20 +2,25 @@ package cc.xacademy.xahousesystem.item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Orientable;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import cc.xacademy.xahousesystem.HousePlugin;
+import cc.xacademy.xahousesystem.util.PlayerUtil;
 import cc.xacademy.xahousesystem.util.TagUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -84,7 +89,7 @@ public class BuildersWandItem extends SpecialItem {
         Location loc = block.getLocation().clone().add(face.getDirection());;
         
         boolean horizontal = TagUtil.readEntry(stack, "Mode", PersistentDataType.INTEGER) == 0;
-        
+                    
         for (int i = 0; i <= size; i++) {
             if (!checkPos(loc, i, player, mat, horizontal, face, from, newBlocks)) break;
         }
@@ -93,12 +98,34 @@ public class BuildersWandItem extends SpecialItem {
             if (!checkPos(loc, i, player, mat, horizontal, face, from, newBlocks)) break;
         }
         
-        for (Location i: newBlocks) {
-            i.getBlock().setType(Material.TNT);
+        int limit = newBlocks.size();
+        
+        if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+            int lack = PlayerUtil.takeAwayMaterial(player, mat, limit);
+            limit -= lack;
+        }
+        
+        for (int i = 0; i < limit; i++) {
+            Block target = newBlocks.get(i).getBlock();
+            target.setType(mat);
+            
+            Block fromBlock = newBlocks.get(i).clone().add(from).getBlock();
+            BlockData fromData = fromBlock.getBlockData();
+            BlockData targetData = target.getBlockData();
+            
+            if (fromData instanceof Directional && targetData instanceof Directional) {
+                ((Directional) targetData).setFacing(((Directional) fromData).getFacing());
+            } else if (fromData instanceof Orientable && targetData instanceof Orientable) {
+                ((Orientable) targetData).setAxis(((Orientable) fromData).getAxis());
+            } else if (fromData instanceof Rotatable && targetData instanceof Rotatable) {
+                ((Rotatable) targetData).setRotation(((Rotatable) fromData).getRotation());
+            }
+            
+            target.setBlockData(targetData);
         }
         
         if (newBlocks.size() != 0) {
-            player.setCooldown(Material.STICK, 40);
+            player.setCooldown(Material.STICK, 2);
         }
     }
     
@@ -162,8 +189,8 @@ public class BuildersWandItem extends SpecialItem {
         }
         
         Material mat = target.clone().add(from).getBlock().getType();
-        if (mat == Material.AIR) return false; // sanity check?
-        if (target.getBlock().getType() != Material.AIR) return false;
+        if (mat.isAir()) return false; // sanity check?
+        if (!target.getBlock().getType().isAir()) return false;
         if (ref != mat) return false;
         
         addTo.add(target.clone());
