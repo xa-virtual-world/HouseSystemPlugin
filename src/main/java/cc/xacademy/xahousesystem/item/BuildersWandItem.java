@@ -2,6 +2,7 @@ package cc.xacademy.xahousesystem.item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.ChatColor;
@@ -73,29 +74,93 @@ public class BuildersWandItem extends SpecialItem {
     }
     
     private static void extendBlocks(ItemStack stack, Player player, Block block, BlockFace face) {
-        Vector from = face.getOppositeFace().getDirection();
         int size = HousePlugin.get().getConfig().getInt("buildersWandRadius", 32);
+        
+        Vector from = face.getOppositeFace().getDirection();
+        Material mat = block.getType();
         List<Location> newBlocks = new ArrayList<>();
+        Location loc = block.getLocation().clone().add(face.getDirection());;
+        
+        boolean horizontal = TagUtil.readEntry(stack, "Mode", PersistentDataType.INTEGER) == 0;
         
         for (int i = 0; i <= size; i++) {
-            if (!checkPos(block, i, face, from, newBlocks)) break;
+            if (!checkPos(loc, i, player, mat, horizontal, face, from, newBlocks)) break;
         }
         
         for (int i = -1; i >= -size; i--) {
-            if (!checkPos(block, i, face, from, newBlocks)) break;
+            if (!checkPos(loc, i, player, mat, horizontal, face, from, newBlocks)) break;
+        }
+        
+        for (Location i: newBlocks) {
+            i.getBlock().setType(Material.TNT);
         }
     }
     
     /**
      * If the given position is a part of the extension, add
      * it to list and return true; otherwise, return false.
-     * 
-     * Also handles the calculation of 
      */
-    private static boolean checkPos(
-            Block block, int offset, BlockFace face, Vector from, List<Location> addTo) {
+    private static boolean checkPos(Location origin, int offset, Player player,
+            Material ref, boolean horizontal, BlockFace face, Vector from, List<Location> addTo) {
         
+        Location target = origin.clone();
+        BlockFace playerDir = player.getFacing();
         
+        if (horizontal) {
+            switch (face) {
+            case EAST:
+            case WEST:
+                target.add(0, 0, offset);
+                break;
+                
+            case NORTH:
+            case SOUTH:
+                target.add(offset, 0, 0);
+                break;
+                
+            default: // UP or DOWN
+                
+                switch (playerDir) {
+                case EAST:
+                case WEST:
+                    target.add(0, 0, offset);
+                    break;
+                default:
+                    target.add(offset, 0, 0);
+                    break;
+                }
+                
+                break;
+            }
+        } else {
+            switch (face) {
+            case UP:
+            case DOWN:
+                
+                switch (playerDir) {
+                case EAST:
+                case WEST:
+                    target.add(offset, 0, 0);
+                    break;
+                default:
+                    target.add(0, 0, offset);
+                    break;
+                }
+                
+                break;
+                
+            default:
+                target.add(0, offset, 0);
+                break;
+            }
+        }
+        
+        Material mat = target.clone().add(from).getBlock().getType();
+        if (mat == Material.AIR) return false; // sanity check?
+        if (target.getBlock().getType() != Material.AIR) return false;
+        if (ref != mat) return false;
+        
+        addTo.add(origin.clone());
         
         return true;
     }
