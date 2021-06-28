@@ -100,4 +100,8 @@ public class TagUtil {
         
         return tag.get(namespace(key), type);
     }
+    
+    public static int approxDurability(double value, double maxValue, int maxDurability) {
+        return (int) (value / maxValue * maxDurability);
+    }
 }
