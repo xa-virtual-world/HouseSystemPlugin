@@ -74,6 +74,8 @@ public class BuildersWandItem extends SpecialItem {
     }
     
     private static void extendBlocks(ItemStack stack, Player player, Block block, BlockFace face) {
+        if (player.getCooldown(Material.STICK) != 0) return;
+        
         int size = HousePlugin.get().getConfig().getInt("buildersWandRadius", 32);
         
         Vector from = face.getOppositeFace().getDirection();
@@ -93,6 +95,10 @@ public class BuildersWandItem extends SpecialItem {
         
         for (Location i: newBlocks) {
             i.getBlock().setType(Material.TNT);
+        }
+        
+        if (newBlocks.size() != 0) {
+            player.setCooldown(Material.STICK, 40);
         }
     }
     
@@ -160,7 +166,7 @@ public class BuildersWandItem extends SpecialItem {
         if (target.getBlock().getType() != Material.AIR) return false;
         if (ref != mat) return false;
         
-        addTo.add(origin.clone());
+        addTo.add(target.clone());
         
         return true;
     }
@@ -174,7 +180,7 @@ public class BuildersWandItem extends SpecialItem {
             tag.set(TagUtil.namespace("Mode"), PersistentDataType.INTEGER, mode.get());
         });
         
-        String modeStr = mode.get() == 1 ? "Horizontal" : "Vertical";
+        String modeStr = mode.get() == 1 ? "Vertical" : "Horizontal";
         
         TagUtil.editMeta(stack, meta -> {
             List<String> lore = meta.getLore();
