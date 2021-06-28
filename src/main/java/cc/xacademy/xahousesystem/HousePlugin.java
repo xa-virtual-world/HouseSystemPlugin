@@ -8,6 +8,7 @@ import cc.xacademy.xahousesystem.command.CommandCompleter;
 import cc.xacademy.xahousesystem.command.GiveSpecialItemCommand;
 import cc.xacademy.xahousesystem.command.O5VaultCommand;
 import cc.xacademy.xahousesystem.container.Containers;
+import cc.xacademy.xahousesystem.integration.API;
 import cc.xacademy.xahousesystem.item.Items;
 import cc.xacademy.xahousesystem.listener.PlayerInteractionHandler;
 import cc.xacademy.xahousesystem.registry.RegistryHandler;
@@ -18,6 +19,7 @@ public class HousePlugin extends JavaPlugin {
     private static HousePlugin instance;
     
     @Getter private RegistryHandler registries;
+    @Getter private API api;
     
     @Override
     public void onEnable() {
@@ -37,6 +39,9 @@ public class HousePlugin extends JavaPlugin {
         
         // listeners
         this.addListener(new PlayerInteractionHandler());
+        
+        // misc init
+        this.api = new API(this);
         
         // commands
         this.getCommand("givespecialitem").setExecutor(new GiveSpecialItemCommand());

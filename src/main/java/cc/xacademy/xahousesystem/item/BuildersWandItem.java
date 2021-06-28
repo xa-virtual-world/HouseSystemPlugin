@@ -15,8 +15,11 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Orientable;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
 
 import cc.xacademy.xahousesystem.HousePlugin;
@@ -81,10 +84,13 @@ public class BuildersWandItem extends SpecialItem {
     private static void extendBlocks(ItemStack stack, Player player, Block block, BlockFace face) {
         if (player.getCooldown(Material.STICK) != 0) return;
         
+        PluginManager pluginManager = HousePlugin.get().getServer().getPluginManager();
         int size = HousePlugin.get().getConfig().getInt("buildersWandRadius", 32);
         
         Vector from = face.getOppositeFace().getDirection();
         Material mat = block.getType();
+        if (!mat.isItem()) return;
+        
         List<Location> newBlocks = new ArrayList<>();
         Location loc = block.getLocation().clone().add(face.getDirection());;
         
@@ -107,9 +113,16 @@ public class BuildersWandItem extends SpecialItem {
         
         for (int i = 0; i < limit; i++) {
             Block target = newBlocks.get(i).getBlock();
+            Block fromBlock = newBlocks.get(i).clone().add(from).getBlock();
+            
+            BlockPlaceEvent event = new BlockPlaceEvent(target, target.getState(),
+                    fromBlock, new ItemStack(mat), player, true, EquipmentSlot.HAND);
+            
+            pluginManager.callEvent(event);
+            if (event.isCancelled()) return;
+            
             target.setType(mat);
             
-            Block fromBlock = newBlocks.get(i).clone().add(from).getBlock();
             BlockData fromData = fromBlock.getBlockData();
             BlockData targetData = target.getBlockData();
             
