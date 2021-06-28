@@ -30,6 +30,7 @@ public class HousePlugin extends JavaPlugin {
         config.options().copyDefaults(true);
         config.addDefault("terraSmasherMaxSize", 2);
         config.addDefault("buildersWandRadius", 32);
+        config.addDefault("railgunMaxCharge", 200);
         this.saveConfig();
         
         // registries
