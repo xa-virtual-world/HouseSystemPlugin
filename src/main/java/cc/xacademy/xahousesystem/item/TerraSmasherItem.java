@@ -122,17 +122,17 @@ public class TerraSmasherItem extends SpecialItem {
     
     @Override
     public void onRightClickAir(ItemStack stack, Player player) {
-        this.cycle(stack, player);
+        cycle(stack, player);
     }
     
     @Override
     public boolean onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
-        this.cycle(stack, player);
+        cycle(stack, player);
         
         return false;
     }
     
-    private void cycle(ItemStack stack, Player player) {
+    private static void cycle(ItemStack stack, Player player) {
         AtomicInteger size = new AtomicInteger(0);
         int maxSize = HousePlugin.get().getConfig().getInt("terraSmasherMaxSize", 2);
         

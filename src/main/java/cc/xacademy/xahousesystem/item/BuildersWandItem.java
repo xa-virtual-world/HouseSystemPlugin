@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 
+import cc.xacademy.xahousesystem.HousePlugin;
 import cc.xacademy.xahousesystem.util.TagUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -63,10 +66,38 @@ public class BuildersWandItem extends SpecialItem {
         if (player.isSneaking()) {
             this.cycle(stack, player);
         } else {
-            
+            extendBlocks(stack, player, block, face);
         }
         
         return false;
+    }
+    
+    private static void extendBlocks(ItemStack stack, Player player, Block block, BlockFace face) {
+        Vector from = face.getOppositeFace().getDirection();
+        int size = HousePlugin.get().getConfig().getInt("buildersWandRadius", 32);
+        List<Location> newBlocks = new ArrayList<>();
+        
+        for (int i = 0; i <= size; i++) {
+            if (!checkPos(block, i, face, from, newBlocks)) break;
+        }
+        
+        for (int i = -1; i >= -size; i--) {
+            if (!checkPos(block, i, face, from, newBlocks)) break;
+        }
+    }
+    
+    /**
+     * If the given position is a part of the extension, add
+     * it to list and return true; otherwise, return false.
+     * 
+     * Also handles the calculation of 
+     */
+    private static boolean checkPos(
+            Block block, int offset, BlockFace face, Vector from, List<Location> addTo) {
+        
+        
+        
+        return true;
     }
     
     private void cycle(ItemStack stack, Player player) {
