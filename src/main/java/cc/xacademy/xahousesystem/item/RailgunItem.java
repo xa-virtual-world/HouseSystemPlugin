@@ -76,9 +76,9 @@ public class RailgunItem extends SpecialItem {
     @Override
     public boolean onRightClickLiving(ItemStack stack, Player player, LivingEntity living) {
         if (player.isSneaking()) {
-            this.tryFire(stack, player);
+            tryFire(stack, player);
         } else {
-            this.charge(stack, player);
+            charge(stack, player);
         }
 
         return living instanceof Sheep || living instanceof Snowman || living instanceof MushroomCow;
@@ -88,9 +88,9 @@ public class RailgunItem extends SpecialItem {
     public boolean onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
         
         if (player.isSneaking()) {
-            this.tryFire(stack, player);
+            tryFire(stack, player);
         } else {
-            this.charge(stack, player);
+            charge(stack, player);
         }
         
         return block.getType() == Material.PUMPKIN ||
@@ -101,13 +101,32 @@ public class RailgunItem extends SpecialItem {
     @Override
     public void onRightClickAir(ItemStack stack, Player player) {
         if (player.isSneaking()) {
-            this.tryFire(stack, player);
+            tryFire(stack, player);
         } else {
-            this.charge(stack, player);
+            charge(stack, player);
         }
     }
     
-    private void charge(ItemStack stack, Player player) {
+    @Override
+    public boolean onItemBreak(ItemStack stack, Player player) {
+        stack.setAmount(2);
+        
+        TagUtil.editMeta(stack, meta -> {
+            if (meta instanceof Damageable) {
+                ((Damageable) meta).setDamage(SHEAR_DURABILITY);
+            }
+        });
+        
+        player.spigot().sendMessage(
+                ChatMessageType.ACTION_BAR,
+                new TextComponent(
+                        ChatColor.RED + "Careful! The railgun is fragile")
+                );
+        
+        return true;
+    }
+    
+    private static void charge(ItemStack stack, Player player) {
         AtomicInteger charge = new AtomicInteger(0);
         int maxCharge = HousePlugin.get().getConfig().getInt("railgunMaxCharge", 200);
         
@@ -152,7 +171,7 @@ public class RailgunItem extends SpecialItem {
         });
     }
     
-    private void tryFire(ItemStack stack, Player player) {
+    private static void tryFire(ItemStack stack, Player player) {
         TagUtil.editTag(stack, tag -> {
             tag.set(TagUtil.namespace("Charge"), PersistentDataType.INTEGER, 0);
         });

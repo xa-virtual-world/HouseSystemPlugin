@@ -7,11 +7,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import cc.xacademy.xahousesystem.util.TagUtil;
 
 public class PlayerInteractionHandler implements Listener {
+    
+    @EventHandler
+    public void onItemBreak(PlayerItemBreakEvent event) {
+        Player player = event.getPlayer();
+        ItemStack stack = event.getBrokenItem();
+        
+        TagUtil.getSpecialFromStack(stack).ifPresent(item -> {
+            item.onItemBreak(stack, player);
+        });
+    }
 
     @EventHandler
     public void onRightClickBlock(PlayerInteractEvent event) {

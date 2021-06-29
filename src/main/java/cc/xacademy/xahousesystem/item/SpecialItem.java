@@ -34,5 +34,9 @@ public abstract class SpecialItem extends IRegistryEntry<SpecialItem> {
         return false;
     }
     
+    public boolean onItemBreak(ItemStack stack, Player player) {
+        return false;
+    }
+    
     public abstract ItemStack createDefaultStack();
 }
