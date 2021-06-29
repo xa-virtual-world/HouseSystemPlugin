@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -18,8 +20,10 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 
 import cc.xacademy.xahousesystem.HousePlugin;
+import cc.xacademy.xahousesystem.util.MathUtil;
 import cc.xacademy.xahousesystem.util.TagUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -169,6 +173,20 @@ public class RailgunItem extends SpecialItem {
                 meta.addEnchant(Enchantment.DURABILITY, 1, true);
             }
         });
+        
+        // particles
+        World world = player.getWorld();
+        double time = world.getGameTime();
+        double speed = 0.1;
+        Vector center = player.getLocation().toVector();
+        Vector forward = new Vector(0, 1, 0);
+        Vector point;
+        
+        point = MathUtil.getCirclePoint(center, forward, new Vector(1, 0, 0), time / 7.5);
+        world.spawnParticle(Particle.FLAME, point.toLocation(world), 0, 0, speed, 0);
+        
+        point = MathUtil.getCirclePoint(center, forward, new Vector(-1, 0, 0), time / 7.5);
+        world.spawnParticle(Particle.FLAME, point.toLocation(world), 0, 0, speed, 0);
     }
     
     private static void tryFire(ItemStack stack, Player player) {
