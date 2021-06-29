@@ -50,13 +50,25 @@ public class RailgunSpiralEffect implements IEffect {
     
     @Override
     public boolean tick() {
+        if (--particleTickCount < 0) {
+            Vector gapDir = this.dir.clone().normalize().multiply(EXPLOSION_GAP);
+            this.start.subtract(gapDir);
+            
+            for (int i = 0; i < this.explosionTimes; i++) {
+                this.world.createExplosion(start, this.explosionRadius, true);
+                this.start.add(gapDir);
+            }
+            
+            return true;
+        }
+        
         double time = (double) this.world.getGameTime();
         Vector point = MathUtil.getCirclePoint(this.start.toVector(), this.dir, this.radius, time);
         
         this.world.spawnParticle(Particle.FLAME, point.toLocation(this.world), 0, 0, 0, 0);
         this.start.add(this.dir);
         
-        return --particleTickCount < 0;
+        return false;
     }
 
 }
