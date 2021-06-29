@@ -12,8 +12,8 @@ public class MathUtil {
      * @param radius a relative vector on center specifying the radius
      * @param time the time, duh
      */
-    public static Vector getCirclePoint(Vector center, Vector forword, Vector radius, double time) {
-        Vector rotated = radius.clone().rotateAroundAxis(forword, time);
+    public static Vector getCirclePoint(Vector center, Vector forward, Vector radius, double time) {
+        Vector rotated = radius.clone().rotateAroundAxis(forward, time);
         rotated.add(center);
         
         return rotated;

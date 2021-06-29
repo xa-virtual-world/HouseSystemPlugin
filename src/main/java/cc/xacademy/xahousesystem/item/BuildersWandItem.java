@@ -82,7 +82,7 @@ public class BuildersWandItem extends SpecialItem {
     }
     
     private static void extendBlocks(ItemStack stack, Player player, Block block, BlockFace face) {
-        if (player.getCooldown(Material.STICK) != 0) return;
+        if (player.hasCooldown(Material.STICK)) return;
         
         PluginManager pluginManager = HousePlugin.get().getServer().getPluginManager();
         int size = HousePlugin.get().getConfig().getInt("buildersWandRadius", 32);

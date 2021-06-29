@@ -176,21 +176,32 @@ public class RailgunItem extends SpecialItem {
         });
         
         // particles
-        World world = player.getWorld();
-        double time = world.getGameTime();
-        double speed = 0.1;
-        Vector center = player.getLocation().toVector();
-        Vector forward = new Vector(0, 1, 0);
-        Vector point;
-        
-        point = MathUtil.getCirclePoint(center, forward, new Vector(1, 0, 0), time / 7.5);
-        world.spawnParticle(Particle.FLAME, point.toLocation(world), 0, 0, speed, 0);
-        
-        point = MathUtil.getCirclePoint(center, forward, new Vector(-1, 0, 0), time / 7.5);
-        world.spawnParticle(Particle.FLAME, point.toLocation(world), 0, 0, speed, 0);
+        if (charge.get() < maxCharge) {
+            World world = player.getWorld();
+            double time = world.getGameTime();
+            double speed = 0.1;
+            Vector center = player.getLocation().toVector();
+            Vector forward = new Vector(0, 1, 0);
+            Vector point;
+            
+            point = MathUtil.getCirclePoint(center, forward, new Vector(1, 0, 0), time / 7.5);
+            world.spawnParticle(Particle.FLAME, point.toLocation(world), 0, 0, speed, 0);
+            
+            point = MathUtil.getCirclePoint(center, forward, new Vector(-1, 0, 0), time / 7.5);
+            world.spawnParticle(Particle.FLAME, point.toLocation(world), 0, 0, speed, 0);
+        }
     }
     
     private static void tryFire(ItemStack stack, Player player) {
+        if (player.hasCooldown(Material.SHEARS)) return;
+        
+        int charge = TagUtil.readEntry(stack, "Charge", PersistentDataType.INTEGER);
+        int times = charge * charge / 1000;
+        int radius = (int) Math.ceil((double) charge / 20);
+        
+        RailgunSpiralEffect effect = new RailgunSpiralEffect(player, times, radius);
+        HousePlugin.get().getEffectManager().addEffect(effect);
+        
         TagUtil.editTag(stack, tag -> {
             tag.set(TagUtil.namespace("Charge"), PersistentDataType.INTEGER, 0);
         });
@@ -207,13 +218,13 @@ public class RailgunItem extends SpecialItem {
             meta.removeEnchant(Enchantment.DURABILITY);
         });
         
+        player.setCooldown(Material.SHEARS, 100);
+        
         player.spigot().sendMessage(
                 ChatMessageType.ACTION_BAR,
                 new TextComponent(
                         ChatColor.AQUA + "Charge: " + formatChargeTooltip(0))
                 );
-        
-        HousePlugin.get().getEffectManager().addEffect(new RailgunSpiralEffect());
     }
     
     private static String formatChargeTooltip(int charge) {
