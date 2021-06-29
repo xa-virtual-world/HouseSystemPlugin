@@ -23,6 +23,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import cc.xacademy.xahousesystem.HousePlugin;
+import cc.xacademy.xahousesystem.effect.RailgunSpiralEffect;
 import cc.xacademy.xahousesystem.util.MathUtil;
 import cc.xacademy.xahousesystem.util.TagUtil;
 import net.md_5.bungee.api.ChatMessageType;
@@ -211,6 +212,8 @@ public class RailgunItem extends SpecialItem {
                 new TextComponent(
                         ChatColor.AQUA + "Charge: " + formatChargeTooltip(0))
                 );
+        
+        HousePlugin.get().getEffectManager().addEffect(new RailgunSpiralEffect());
     }
     
     private static String formatChargeTooltip(int charge) {
