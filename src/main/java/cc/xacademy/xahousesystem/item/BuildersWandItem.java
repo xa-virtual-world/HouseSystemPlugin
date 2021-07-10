@@ -58,7 +58,7 @@ public class BuildersWandItem extends SpecialItem {
         });
         
         TagUtil.addItemGlint(stack);
-        TagUtil.setupSpecialItem(stack, "builders_wand");
+        TagUtil.setupSpecialItem(stack, this.getRegistryName());
         
         return stack;
     }

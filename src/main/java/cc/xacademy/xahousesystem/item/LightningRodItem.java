@@ -36,7 +36,7 @@ public class LightningRodItem extends SpecialItem {
             meta.setLore(lore);
         });
         
-        TagUtil.setupSpecialItem(stack, "lightning_rod");
+        TagUtil.setupSpecialItem(stack, this.getRegistryName());
         TagUtil.addItemGlint(stack);
         
         return stack;

@@ -41,7 +41,7 @@ public class SpellBlinkItem extends SpecialItem {
         });
         
         TagUtil.addItemGlint(stack);
-        TagUtil.setupSpecialItem(stack, "spell_blink");
+        TagUtil.setupSpecialItem(stack, this.getRegistryName());
         
         return stack;
     }

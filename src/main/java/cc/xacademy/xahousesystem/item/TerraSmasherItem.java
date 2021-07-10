@@ -58,7 +58,7 @@ public class TerraSmasherItem extends SpecialItem {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         });
         
-        TagUtil.setupSpecialItem(stack, "terra_smasher");
+        TagUtil.setupSpecialItem(stack, this.getRegistryName());
         
         return stack;
     }

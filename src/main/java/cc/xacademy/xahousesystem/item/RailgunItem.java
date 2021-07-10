@@ -73,7 +73,7 @@ public class RailgunItem extends SpecialItem {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         });
         
-        TagUtil.setupSpecialItem(stack, "railgun");
+        TagUtil.setupSpecialItem(stack, this.getRegistryName());
         
         return stack;
     }
@@ -196,7 +196,7 @@ public class RailgunItem extends SpecialItem {
         if (player.hasCooldown(Material.SHEARS)) return;
         
         int charge = TagUtil.readEntry(stack, "Charge", PersistentDataType.INTEGER);
-        int times = charge * charge / 1000;
+        int times = charge * charge / 1000 + 1;
         int radius = (int) Math.ceil((double) charge / 20);
         
         RailgunSpiralEffect effect = new RailgunSpiralEffect(player, times, radius);
