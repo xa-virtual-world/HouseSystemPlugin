@@ -11,6 +11,7 @@ import cc.xacademy.xahousesystem.container.Containers;
 import cc.xacademy.xahousesystem.effect.EffectManager;
 import cc.xacademy.xahousesystem.integration.API;
 import cc.xacademy.xahousesystem.item.Items;
+import cc.xacademy.xahousesystem.listener.AnvilListener;
 import cc.xacademy.xahousesystem.listener.PlayerInteractionHandler;
 import cc.xacademy.xahousesystem.registry.RegistryHandler;
 import lombok.Getter;
@@ -49,6 +50,7 @@ public class HousePlugin extends JavaPlugin {
         
         // listeners
         this.addListener(new PlayerInteractionHandler());
+        this.addListener(new AnvilListener());
         
         // commands
         this.getCommand("givespecialitem").setExecutor(new GiveSpecialItemCommand());
