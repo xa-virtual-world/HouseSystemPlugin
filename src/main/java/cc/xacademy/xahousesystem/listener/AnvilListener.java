@@ -31,23 +31,33 @@ public class AnvilListener implements Listener {
             
             if (first.getType() == Material.ENCHANTED_BOOK) {
                 out = new ItemStack(Material.ENCHANTED_BOOK);
+                
+                ItemMeta firstMeta = first.getItemMeta();
+                ItemMeta secondMeta = second.getItemMeta();
+                ItemMeta outMeta = out.getItemMeta();
+                
+                if (firstMeta == null || secondMeta == null) return;
+                
+                TagUtil.coerceEnchantedBooks(outMeta, firstMeta);
+                TagUtil.coerceEnchantedBooks(outMeta, secondMeta);
+                
+                out.setItemMeta(outMeta);
             } else {
                 out = first.clone();
                 ItemMeta book = second.getItemMeta();
                 
                 if (book == null) return;
                 
-                EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book;
-                for (Enchantment i: meta.getStoredEnchants().keySet()) {
-                    if (TagUtil.canEnchant(out, i)) {
-                        int stackLevel = out.getEnchantmentLevel(i);
-                        int bookLevel = out.getEnchantmentLevel(i);
+                EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book;                
+                meta.getStoredEnchants().forEach((ench, lvl) -> {
+                    if (TagUtil.canEnchant(out, ench)) {
+                        int stackLevel = out.getEnchantmentLevel(ench);
                         
-                        if (bookLevel > stackLevel) {
-                            out.addUnsafeEnchantment(i, bookLevel);
+                        if (lvl > stackLevel) {
+                            out.addUnsafeEnchantment(ench, lvl);
                         }
                     }
-                }
+                });
             }
             
             event.setResult(out);

@@ -10,6 +10,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -116,5 +117,19 @@ public class TagUtil {
         }
         
         return result;
+    }
+    
+    /**
+     * Writes the enchantments from b to a.
+     */
+    public static void coerceEnchantedBooks(ItemMeta a, ItemMeta b) {
+        EnchantmentStorageMeta first = (EnchantmentStorageMeta) a;
+        EnchantmentStorageMeta second = (EnchantmentStorageMeta) b;
+        
+        second.getStoredEnchants().forEach((ench, lvl) -> {
+            int firstLevel = first.getEnchantLevel(ench);
+            
+            if (lvl > firstLevel) first.addStoredEnchant(ench, lvl, true);
+        });
     }
 }
