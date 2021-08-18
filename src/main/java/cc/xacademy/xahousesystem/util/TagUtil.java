@@ -104,4 +104,17 @@ public class TagUtil {
     public static int approxDurability(double value, double maxValue, int maxDurability) {
         return (int) (value / maxValue * maxDurability);
     }
+    
+    public static boolean canEnchant(ItemStack stack, Enchantment ench) {
+        ItemMeta meta = stack.getItemMeta();
+        boolean result = ench.canEnchantItem(stack);
+        
+        if (meta == null) return result;
+        
+        for (Enchantment i: meta.getEnchants().keySet()) {
+            if (i != ench && i.conflictsWith(ench)) result = false;
+        }
+        
+        return result;
+    }
 }
