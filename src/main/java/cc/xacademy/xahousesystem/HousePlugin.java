@@ -35,6 +35,7 @@ public class HousePlugin extends JavaPlugin {
         config.addDefault("buildersWandRadius", 32);
         config.addDefault("railgunMaxCharge", 200);
         config.addDefault("removeMaxAnvilLevel", true);
+        config.addDefault("harvesterRadius", 4);
         this.saveConfig();
         
         // registries

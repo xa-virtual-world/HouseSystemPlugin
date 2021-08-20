@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -63,13 +64,12 @@ public class HarvesterItem extends SpecialItem {
         for (int i = -size; i <= size; i++) {
             for (int j = -size; j <= size; j++) {
                 Location at = new Location(
-                    world,
-                    pos.getBlockX() + i,
-                    pos.getBlockY(),
-                    pos.getBlockZ() + j
-                );
+                        world,
+                        pos.getBlockX() + i,
+                        pos.getBlockY(),
+                        pos.getBlockZ() + j);
                 
-                harvestBlock(player, pos);
+                harvestBlock(player, at);
             }
         }
         
@@ -111,20 +111,25 @@ public class HarvesterItem extends SpecialItem {
         } else {
             block.setType(Material.AIR);
         }
+        
+        player.getWorld().spawnParticle(
+                Particle.ENCHANTMENT_TABLE,
+                block.getLocation().clone().add(0.5, 0.5, 0.5),
+                10, 0.5, 0.5, 0.5);
     }
     
     public static boolean shouldHarvest(Block block) {
         switch (block.getType()) {
-        case WHEAT:
-        case COCOA:
-        case CARROT:
-        case POTATO:
-        case BEETROOT:
-        case NETHER_WART:
-            Ageable ageable = (Ageable) block.getBlockData();            
-            return ageable.getAge() == ageable.getMaximumAge();
-            
-        default: return false;
+            case WHEAT:
+            case COCOA:
+            case CARROTS:
+            case POTATOES:
+            case BEETROOTS:
+            case NETHER_WART:
+                Ageable ageable = (Ageable) block.getBlockData();
+                return ageable.getAge() == ageable.getMaximumAge();
+                
+            default: return false;
         }
     }
     
@@ -132,9 +137,9 @@ public class HarvesterItem extends SpecialItem {
         switch (material) {
             case WHEAT: return Material.WHEAT_SEEDS;
             case COCOA: return Material.COCOA_BEANS;
-            case CARROT: return Material.CARROT;
-            case POTATO: return Material.POTATO;
-            case BEETROOT: return Material.BEETROOT_SEEDS;
+            case CARROTS: return Material.CARROT;
+            case POTATOES: return Material.POTATO;
+            case BEETROOTS: return Material.BEETROOT_SEEDS;
             case NETHER_WART: return Material.NETHER_WART;
             default: return Material.AIR;
         }

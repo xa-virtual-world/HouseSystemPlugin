@@ -13,5 +13,6 @@ public class Items {
         registry.register(new SpellBlinkItem("spell_blink"));
         registry.register(new BuildersWandItem("builders_wand"));
         registry.register(new RailgunItem("railgun"));
+        registry.register(new HarvesterItem("harvester"));
     }
 }
