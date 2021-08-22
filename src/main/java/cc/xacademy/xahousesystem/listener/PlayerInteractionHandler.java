@@ -5,6 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
@@ -25,7 +26,7 @@ public class PlayerInteractionHandler implements Listener {
     }
 
     @EventHandler
-    public void onRightClickBlock(PlayerInteractEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent event) {
         if (!event.hasItem()) return;
         
         Player player = event.getPlayer();
@@ -69,6 +70,22 @@ public class PlayerInteractionHandler implements Listener {
         
         TagUtil.getSpecialFromStack(stack).ifPresent(item -> {
             event.setCancelled(item.onRightClickLiving(stack, player, (LivingEntity) entity));
+        });
+    }
+    
+    @EventHandler
+    public void onEntityAttack(EntityDamageByEntityEvent event) {
+        Entity attacker = event.getDamager();
+        if (!(attacker instanceof Player)) return;
+        
+        Entity target = event.getEntity();
+        Player player = (Player) attacker;
+        ItemStack stack = player.getInventory().getItemInMainHand();
+        
+        if (stack == null || !(target instanceof LivingEntity)) return;
+        
+        TagUtil.getSpecialFromStack(stack).ifPresent(item -> {
+            event.setCancelled(item.onLeftClickLiving(stack, player, (LivingEntity) target));
         });
     }
 }

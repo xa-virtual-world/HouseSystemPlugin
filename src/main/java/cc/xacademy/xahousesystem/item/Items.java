@@ -14,5 +14,6 @@ public class Items {
         registry.register(new BuildersWandItem("builders_wand"));
         registry.register(new RailgunItem("railgun"));
         registry.register(new HarvesterItem("harvester"));
+        registry.register(new InterdimensionalSaberItem("interdimensional_saber"));
     }
 }

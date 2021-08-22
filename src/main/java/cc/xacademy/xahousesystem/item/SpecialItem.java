@@ -26,6 +26,10 @@ public abstract class SpecialItem extends IRegistryEntry<SpecialItem> {
         return false;
     }
     
+    public boolean onLeftClickLiving(ItemStack stack, Player player, LivingEntity living) {
+        return false;
+    }
+    
     public boolean onRightClickBlock(ItemStack stack, Player player, Block block, BlockFace face) {
         return false;
     }
