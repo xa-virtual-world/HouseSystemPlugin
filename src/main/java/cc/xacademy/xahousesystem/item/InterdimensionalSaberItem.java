@@ -49,7 +49,7 @@ public class InterdimensionalSaberItem extends SpecialItem {
             if (i.getType() != type) return;
             
             if (type != EntityType.PLAYER) {
-                //System.out.println(i.getName());
+                System.out.println(i.getName());
             }
         });
         

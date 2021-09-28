@@ -62,7 +62,7 @@ public class RailgunSpiralEffect implements IEffect {
             return true;
         }
         
-        double time = (double) this.world.getGameTime();
+        double time = (double) this.world.getFullTime();
         Vector point = MathUtil.getCirclePoint(this.start.toVector(), this.dir, this.radius, time);
         
         this.world.spawnParticle(Particle.FLAME, point.toLocation(this.world), 0, 0, 0, 0);

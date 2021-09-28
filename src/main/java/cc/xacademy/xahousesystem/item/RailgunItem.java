@@ -178,7 +178,7 @@ public class RailgunItem extends SpecialItem {
         // particles
         if (charge.get() < maxCharge) {
             World world = player.getWorld();
-            double time = world.getGameTime();
+            double time = world.getFullTime();
             double speed = 0.1;
             Vector center = player.getLocation().toVector();
             Vector forward = new Vector(0, 1, 0);
